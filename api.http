@@ -1,4 +1,5 @@
 @apiurl = http://localhost:3000
+@eventId = 77dc1436-a653-49a1-bd57-18db7b801b9b
 
 ###
 GET {{apiurl}}/events
@@ -17,4 +18,21 @@ Content-Type: application/json
 
 
 ###
-GET {{apiurl}}/events/c045c4ef-397b-462f-a3ff-52cbb3a0a7e2
+GET {{apiurl}}/events/{{eventId}}
+
+
+### Spots ###
+@spotId = 2a707a16-bf1c-4845-87c4-fc632bf96d98
+
+GET {{apiurl}}/events/{{eventId}}/spots
+
+###
+POST {{apiurl}}/events/{{eventId}}/spots
+Content-Type: application/json
+
+{
+    "name": "A1"
+}
+
+### 
+GET {{apiurl}}/events/{{eventId}}/spots/{{spotId}}
