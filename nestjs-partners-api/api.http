@@ -31,7 +31,7 @@ POST {{apiurl}}/events/{{eventId}}/spots
 Content-Type: application/json
 
 {
-    "name": "A1"
+    "name": "A2"
 }
 
 ### 
