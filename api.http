@@ -1,0 +1,20 @@
+@apiurl = http://localhost:3000
+
+###
+GET {{apiurl}}/events
+
+
+###
+POST {{apiurl}}/events
+Content-Type: application/json
+
+{
+  "name": "New Event 3",
+  "date": "2025-10-10T00:00:00.000z",
+  "description": "this is a new event created throught .http archieve",
+  "price": 32.99
+}
+
+
+###
+GET {{apiurl}}/events/c045c4ef-397b-462f-a3ff-52cbb3a0a7e2
