@@ -1,0 +1,57 @@
+@apiurl = http://localhost:3000
+@eventId = dbff77b4-8879-4fc9-84ba-74e4fda1af5c
+
+############################################################
+#                    Partner 1                             #
+############################################################
+
+###
+GET {{apiurl}}/events
+
+
+###
+POST {{apiurl}}/events
+Content-Type: application/json
+
+{
+  "name": "New Event 3",
+  "date": "2025-10-10T00:00:00.000z",
+  "description": "this is a new event created throught .http archieve",
+  "price": 32.99
+}
+
+
+###
+GET {{apiurl}}/events/{{eventId}}
+
+
+### Spots ###
+@spotId = 3f18c6d3-ba44-4514-aaf7-77e64c07c236
+
+GET {{apiurl}}/events/{{eventId}}/spots
+
+###
+POST {{apiurl}}/events/{{eventId}}/spots
+Content-Type: application/json
+
+{
+    "name": "A3"
+}
+
+### 
+GET {{apiurl}}/events/{{eventId}}/spots/{{spotId}}
+
+
+###
+
+POST {{apiurl}}/events/{{eventId}}/reserve
+Content-Type: application/json
+
+{
+  "spots": ["A1"],
+  "ticket_kind": "full",
+  "email": "test@test.com"
+}
+
+
+

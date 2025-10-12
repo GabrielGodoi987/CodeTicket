@@ -1,0 +1,49 @@
+@apiurl = http://localhost:3001
+
+###
+GET {{apiurl}}/eventos
+
+
+###
+# @name criarEvento
+POST {{apiurl}}/eventos
+Content-Type: application/json
+
+{
+  "nome": "event 1",
+  "descricao": "event 1 description",
+  "data": "2024-06-02T10:23:14",
+  "preco": 100.10
+}
+
+###
+
+@eventoId = {{ criarEvento.response.body.id }}
+
+###
+GET {{apiurl}}/eventos/{{eventoId}}/lugares
+
+###
+# @name criarLugar
+POST {{apiurl}}/eventos/{{eventoId}}/lugares
+Content-Type: application/json
+
+{
+  "nome": "spot 2"
+}
+
+###
+
+@lugarNome = {{ criarLugar.response.body.name }}
+
+### Reserve spots
+
+POST {{apiurl}}/eventos/{{eventoId}}/reservar
+Content-Type: application/json
+X-Api-Token: 000
+
+{
+  "lugares": ["{{lugarNome}}"],
+  "tipo_ingresso": "inteira",
+  "email": "user1@test.com"
+}
