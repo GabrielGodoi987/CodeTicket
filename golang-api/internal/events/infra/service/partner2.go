@@ -73,9 +73,9 @@ func (p *Partner2) MakeReservation(req *ReservationRequest) ([]ReservationRespon
 
 	for i, r := range partnerResp {
 		responses[i] = ReservationResponse{
-			ID:         r.ID,
-			Spot:       r.Spot,
-			Status:     r.Status,
+			ID:     r.ID,
+			Spot:   r.Spot,
+			Status: r.Status,
 		}
 	}
 

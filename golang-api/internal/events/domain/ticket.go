@@ -1,38 +1,65 @@
 package domain
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/google/uuid"
+)
 
 var (
 	ErrTicketPriceZero = errors.New("ticket price must be greater than zero")
 )
 
-
-type TicketType string
+type TicketKind string
 
 const (
-	TicketTypeHalf TicketType = "half"
-	TicketTypeFull TicketType = "full"
+	TicketTypeHalf TicketKind = "half"
+	TicketTypeFull TicketKind = "full"
+)
+
+// Errors
+var (
+	ErrInvalidTicketKind = errors.New("invalid ticket kind")
 )
 
 type Ticket struct {
 	ID         string
-	EventId    string
+	EventID    string
 	Spot       *Spot
-	TicketType TicketType
+	TicketKind TicketKind
 	Price      float64
 }
 
+func NewTicket(event *Event, spot *Spot, ticketKind TicketKind) (*Ticket, error) {
+	if !IsValidTicketKind(ticketKind) {
+		return nil, ErrInvalidTicketKind
+	}
 
-func IsValidTicketType(ticketType TicketType) bool {
-	return ticketType == TicketTypeHalf || ticketType == TicketTypeFull
+	ticket := &Ticket{
+		ID:         uuid.New().String(),
+		EventID:    event.ID,
+		Spot:       spot,
+		TicketKind: ticketKind,
+		Price:      event.Price,
+	}
+	
+	ticket.CalculatePrice()
+	if err := ticket.Validate(); err != nil {
+		return nil, err
+	}
+
+	return ticket, nil
 }
 
-func (t *Ticket) CalculatePrice(){
-	if t.TicketType == TicketTypeHalf {
+func IsValidTicketKind(ticketKind TicketKind) bool {
+	return ticketKind == TicketTypeHalf || ticketKind == TicketTypeFull
+}
+
+func (t *Ticket) CalculatePrice() {
+	if t.TicketKind == TicketTypeHalf {
 		t.Price /= 2
 	}
 }
-
 
 func (t *Ticket) Validate() error {
 	if t.Price <= 0 {

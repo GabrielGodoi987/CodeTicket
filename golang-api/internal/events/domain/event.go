@@ -3,6 +3,8 @@ package domain
 import (
 	"errors"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 var (
@@ -30,7 +32,7 @@ type Event struct {
 	Organization string
 	Rating       Rating
 	Date         time.Time
-	ImageUrl     string
+	ImageURL     string
 	Capacity     int
 	Price        float64
 	PartnerID    int    // de acordo com o id, vamos chamar o sistema externo diferente
@@ -38,7 +40,27 @@ type Event struct {
 	Tickets      []Ticket
 }
 
-func (e Event) validate() error {
+func NewEvent(name, location, organization string, rating Rating, date time.Time, capacity int, price float64, imageUrl string, partnerID int) (*Event, error) {
+	event := &Event{
+		ID:           uuid.New().String(),
+		Name:         name,
+		Location:     location,
+		Organization: organization,
+		Rating:       rating,
+		Date:         date,
+		Capacity:     capacity,
+		Price:        price,
+		ImageURL:     imageUrl,
+		PartnerID:    partnerID,
+		Spots:        make([]Spot, 0),
+	}
+	if err := event.Validate(); err != nil {
+		return nil, err
+	}
+	return event, nil
+}
+
+func (e Event) Validate() error {
 	if e.Name == "" {
 		return ErrEventNameRequired
 	}
